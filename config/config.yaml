@@ -1,0 +1,9 @@
+model:
+  path: yolov8n.pt
+  confidence_threshold: 0.5
+
+event:
+  min_duration: 2.0
+
+logging:
+  file: outputs/logs/detections.json
