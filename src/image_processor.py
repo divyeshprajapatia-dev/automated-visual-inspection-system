@@ -1,5 +1,6 @@
 import cv2
 from ultralytics import YOLO
+from src.logger import DetectionLogger
 
 def process_image(
     image_path,
@@ -9,6 +10,7 @@ def process_image(
 ):
     # Load model
     model = YOLO(model_path)
+    logger = DetectionLogger()
 
     # Read image
     image = cv2.imread(image_path)
@@ -25,9 +27,16 @@ def process_image(
             conf = float(box.conf[0])
             if conf < confidence_threshold:
                 continue
-
+            
             cls_id = int(box.cls[0])
             class_name = model.names[cls_id]
+           
+           #for take log
+            logger.log(
+                source="image",
+                object_name=class_name,
+                confidence=conf
+            )
 
             x1, y1, x2, y2 = map(int, box.xyxy[0])
 
